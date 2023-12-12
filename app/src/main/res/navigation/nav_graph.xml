@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginPage">
+
+    <fragment
+        android:id="@+id/loginPage"
+        android:name="com.example.homework_17_loginregisterappupdated.loginPage.LoginPage"
+        android:label="fragment_login_page"
+        tools:layout="@layout/fragment_login_page">
+        <action
+            android:id="@+id/action_loginPage_to_homePage"
+            app:destination="@id/homePage"
+            app:popUpTo="@id/loginPage"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_loginPage_to_registerPage"
+            app:destination="@id/registerPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/homePage"
+        android:name="com.example.homework_17_loginregisterappupdated.homePage.HomeFragment"
+        android:label="fragment_home_page"
+        tools:layout="@layout/fragment_home_page">
+        <action
+            android:id="@+id/action_homePage_to_loginPage"
+            app:destination="@id/loginPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerPage"
+        android:name="com.example.homework_17_loginregisterappupdated.registerPage.RegisterPage"
+        android:label="fragment_register_page"
+        tools:layout="@layout/fragment_register_page">
+        <action
+            android:id="@+id/action_registerPage_to_loginPage"
+            app:destination="@id/loginPage" />
+    </fragment>
+
+</navigation>
