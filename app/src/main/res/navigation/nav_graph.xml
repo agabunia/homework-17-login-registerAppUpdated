@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginPage">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/loginPage"
@@ -13,8 +13,8 @@
         <action
             android:id="@+id/action_loginPage_to_homePage"
             app:destination="@id/homePage"
-            app:popUpTo="@id/loginPage"
-            app:popUpToInclusive="true"/>
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_loginPage_to_registerPage"
             app:destination="@id/registerPage" />
@@ -36,6 +36,18 @@
         <action
             android:id="@+id/action_registerPage_to_loginPage"
             app:destination="@id/loginPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.homework_17_loginregisterappupdated.splashScreen.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_loginPage"
+            app:destination="@id/loginPage" />
+        <action
+            android:id="@+id/action_splashFragment_to_homePage"
+            app:destination="@id/homePage" />
     </fragment>
 
 </navigation>

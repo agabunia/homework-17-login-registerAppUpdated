@@ -41,6 +41,7 @@ class LoginPage : BaseFragment<FragmentLoginPageBinding>(FragmentLoginPageBindin
                         is Resource.Success -> {
                             if (it.data.token.isNotBlank()) {
                                 showToast("Registration succeeded")
+                                saveUserEmail()
                                 sendEmailAddress()
                                 sendToHomePage()
                             }
@@ -89,14 +90,20 @@ class LoginPage : BaseFragment<FragmentLoginPageBinding>(FragmentLoginPageBindin
     }
 
     private fun receiveDataFromRegister() {
-        setFragmentResultListener("requestUserData") {_, bundle ->
+        setFragmentResultListener("requestUserData") { _, bundle ->
             val receivedMail = bundle.getString("userDataEmail")
             val receivedPassword = bundle.getString("userDataPassword")
 
-            if(!receivedMail.isNullOrBlank()) {
+            if (!receivedMail.isNullOrBlank()) {
                 binding.etEmail.setText(receivedMail)
                 binding.etPassword.setText(receivedPassword)
             }
+        }
+    }
+
+    private fun saveUserEmail() {
+        if (binding.checkbox.isChecked) {
+            viewModel.setEmail(binding.etEmail.text.toString())
         }
     }
 
