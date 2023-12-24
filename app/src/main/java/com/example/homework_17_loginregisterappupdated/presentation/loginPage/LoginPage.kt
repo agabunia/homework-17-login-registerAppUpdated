@@ -1,4 +1,4 @@
-package com.example.homework_17_loginregisterappupdated.loginPage
+package com.example.homework_17_loginregisterappupdated.presentation.loginPage
 
 import android.view.View
 import android.widget.Toast
@@ -10,12 +10,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.homework_17_loginregisterappupdated.BaseFragment
 import com.example.homework_17_loginregisterappupdated.R
 import com.example.homework_17_loginregisterappupdated.common.Resource
 import com.example.homework_17_loginregisterappupdated.databinding.FragmentLoginPageBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class LoginPage : BaseFragment<FragmentLoginPageBinding>(FragmentLoginPageBinding::inflate) {
     private val viewModel: LoginViewModel by viewModels()
 
@@ -41,9 +44,9 @@ class LoginPage : BaseFragment<FragmentLoginPageBinding>(FragmentLoginPageBindin
                         is Resource.Success -> {
                             if (it.data.token.isNotBlank()) {
                                 showToast("Registration succeeded")
-                                saveUserEmail()
                                 sendEmailAddress()
-                                sendToHomePage()
+                                saveEmail()
+                                navigation()
                             }
                         }
 
@@ -72,11 +75,11 @@ class LoginPage : BaseFragment<FragmentLoginPageBinding>(FragmentLoginPageBindin
     }
 
     private fun sendToRegisterPage() {
-        Navigation.findNavController(binding.root).navigate(R.id.action_loginPage_to_registerPage)
+        findNavController().navigate(LoginPageDirections.actionLoginPageToRegisterPage())
     }
 
     private fun sendToHomePage() {
-        Navigation.findNavController(binding.root).navigate(R.id.action_loginPage_to_homePage)
+        findNavController().navigate(LoginPageDirections.actionLoginPageToHomePage())
     }
 
     private fun loginProcess() {
@@ -101,9 +104,23 @@ class LoginPage : BaseFragment<FragmentLoginPageBinding>(FragmentLoginPageBindin
         }
     }
 
-    private fun saveUserEmail() {
+    private fun navigation() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.successFlow.collect {
+                    when (it) {
+                        is LoginFragmentNavigationEvent.NavigateToHome -> sendToHomePage()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun saveEmail() {
         if (binding.checkbox.isChecked) {
             viewModel.setEmail(binding.etEmail.text.toString())
+        } else {
+            sendToHomePage()
         }
     }
 

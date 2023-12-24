@@ -1,7 +1,5 @@
 package com.example.homework_17_loginregisterappupdated.common
 
-import com.example.homework_17_loginregisterappupdated.registerPage.RegisterResponse
-
 sealed class Resource<T>(
     val token: T? = null,
     val error: String? = null,

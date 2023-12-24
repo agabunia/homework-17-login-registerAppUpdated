@@ -13,16 +13,16 @@ import kotlinx.coroutines.flow.map
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 object DataStoreUtil {
-    private val EMAIL = stringPreferencesKey("definedEmail")
+    private val EMAIL_KEY = stringPreferencesKey("definedEmail")
 
     fun getEmail(): Flow<String> = App.application.applicationContext.dataStore.data
         .map { preferences ->
-            preferences[EMAIL] ?: ""
+            preferences[EMAIL_KEY] ?: ""
         }
 
     suspend fun setEmail(email: String) {
         App.application.applicationContext.dataStore.edit { settings ->
-            settings[EMAIL] = email
+            settings[EMAIL_KEY] = email
         }
     }
 

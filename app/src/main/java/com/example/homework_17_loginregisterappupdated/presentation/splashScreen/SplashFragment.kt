@@ -1,15 +1,18 @@
-package com.example.homework_17_loginregisterappupdated.splashScreen
+package com.example.homework_17_loginregisterappupdated.presentation.splashScreen
 
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.homework_17_loginregisterappupdated.BaseFragment
 import com.example.homework_17_loginregisterappupdated.R
 import com.example.homework_17_loginregisterappupdated.databinding.FragmentSplashBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+//@AndroidEntryPoint
 class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding::inflate) {
     private val viewModel: SplashViewModel by viewModels()
 
@@ -24,7 +27,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     override fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.mailFlow.collect {
+                viewModel.sessionFlow.collect {
                     redirectToFragment(it)
                 }
             }
@@ -33,11 +36,9 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
 
     private fun redirectToFragment(session: Boolean) {
         if (session) {
-            Navigation.findNavController(binding.root)
-                .navigate(R.id.action_splashFragment_to_homePage)
+            findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomePage())
         } else {
-            Navigation.findNavController(binding.root)
-                .navigate(R.id.action_splashFragment_to_loginPage)
+            findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginPage())
         }
     }
 

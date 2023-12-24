@@ -1,18 +1,22 @@
-package com.example.homework_17_loginregisterappupdated.registerPage
+package com.example.homework_17_loginregisterappupdated.presentation.registerPage
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homework_17_loginregisterappupdated.common.Resource
-import com.example.homework_17_loginregisterappupdated.network.RegisterNetworkModel
+import com.example.homework_17_loginregisterappupdated.domain.register.RegisterRepository
+import com.example.homework_17_loginregisterappupdated.domain.register.RegisterResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okio.IOException
 import retrofit2.Response
+import javax.inject.Inject
 
-class RegisterViewModel : ViewModel() {
+@HiltViewModel
+class RegisterViewModel @Inject constructor(val repository: RegisterRepository) : ViewModel() {
 
     private val _userFlow = MutableStateFlow<Resource<RegisterResponse>>(
         Resource.Success(data = RegisterResponse(0, ""))
@@ -30,22 +34,13 @@ class RegisterViewModel : ViewModel() {
         } else {
             _userFlow.value = Resource.Loading(isLoading = true)
             viewModelScope.launch {
-                try {
-                    val response: Response<RegisterResponse> =
-                        RegisterNetworkModel.register().register(UserInfo(email, password))
-                    if (response.isSuccessful) {
-                        _userFlow.value = Resource.Success(data = response.body()!!)
-                        Log.d("API_Message", "success: ${response.code()} - ${response.body()}")
-                    } else {
-                        _userFlow.value =
-                            Resource.Fail(errorMessage = response.errorBody()?.toString() ?: "")
-                        Log.d("API_Message", "failed: ${response.code()} - ${response.errorBody()}")
-                    }
-                } catch (e: IOException) {
-                    Log.d("API_Message", "exception: ${e.message}")
-                } finally {
-                    _userFlow.value = Resource.Loading(isLoading = false)
-                }
+                 repository.register(email, password).collect{
+                     when(it) {
+                         is Resource.Success -> _userFlow.value = Resource.Success(data = it.data)
+                         is Resource.Fail -> _userFlow.value = Resource.Fail(errorMessage = it.errorMessage)
+                         is Resource.Loading -> _userFlow.value = Resource.Loading(isLoading = it.isLoading)
+                     }
+                 }
             }
         }
     }

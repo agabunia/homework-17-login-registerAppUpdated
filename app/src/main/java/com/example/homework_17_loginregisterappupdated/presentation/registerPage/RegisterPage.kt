@@ -1,22 +1,22 @@
-package com.example.homework_17_loginregisterappupdated.registerPage
+package com.example.homework_17_loginregisterappupdated.presentation.registerPage
 
 import android.util.Log.d
 import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.homework_17_loginregisterappupdated.BaseFragment
-import com.example.homework_17_loginregisterappupdated.R
 import com.example.homework_17_loginregisterappupdated.common.Resource
 import com.example.homework_17_loginregisterappupdated.databinding.FragmentRegisterPageBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class RegisterPage :
     BaseFragment<FragmentRegisterPageBinding>(FragmentRegisterPageBinding::inflate) {
     private val viewModel: RegisterViewModel by viewModels()
@@ -79,7 +79,7 @@ class RegisterPage :
     }
 
     private fun sendToLoginPage() {
-        Navigation.findNavController(binding.root).navigate(R.id.action_registerPage_to_loginPage)
+        findNavController().navigate(RegisterPageDirections.actionRegisterPageToLoginPage())
     }
 
     private fun sendUserData() {
@@ -90,7 +90,6 @@ class RegisterPage :
             putString("userDataPassword", password)
         }
         setFragmentResult("requestUserData", result)
-//        setFragmentResult("requestUserData", bundleOf("userDataPassword" to password))
     }
 
 }

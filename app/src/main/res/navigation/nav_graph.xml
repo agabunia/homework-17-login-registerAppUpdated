@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginPage"
-        android:name="com.example.homework_17_loginregisterappupdated.loginPage.LoginPage"
+        android:name="com.example.homework_17_loginregisterappupdated.presentation.loginPage.LoginPage"
         android:label="fragment_login_page"
         tools:layout="@layout/fragment_login_page">
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/homePage"
-        android:name="com.example.homework_17_loginregisterappupdated.homePage.HomeFragment"
+        android:name="com.example.homework_17_loginregisterappupdated.presentation.homePage.HomeFragment"
         android:label="fragment_home_page"
         tools:layout="@layout/fragment_home_page">
         <action
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerPage"
-        android:name="com.example.homework_17_loginregisterappupdated.registerPage.RegisterPage"
+        android:name="com.example.homework_17_loginregisterappupdated.presentation.registerPage.RegisterPage"
         android:label="fragment_register_page"
         tools:layout="@layout/fragment_register_page">
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.homework_17_loginregisterappupdated.splashScreen.SplashFragment"
+        android:name="com.example.homework_17_loginregisterappupdated.presentation.splashScreen.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
